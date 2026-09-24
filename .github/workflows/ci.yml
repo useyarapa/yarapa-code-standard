@@ -1,0 +1,344 @@
+name: Verify
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      heavy: ${{ steps.filter.outputs.heavy }}
+      workflow: ${{ steps.filter.outputs.workflow }}
+      changeset: ${{ steps.filter.outputs.changeset }}
+      hooks: ${{ steps.filter.outputs.hooks }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Detect relevant changes
+        id: filter
+        uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
+        with:
+          predicate-quantifier: some-with-excludes
+          filters: .github/file-filters.yml
+
+  actionlint:
+    name: Actionlint
+    needs: changes
+    if: needs.changes.outputs.workflow == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Lint GitHub Actions workflows
+        uses: reviewdog/action-actionlint@320fcdd9c860767cf17fab3b20e22e739d5d02b8 # v1.76.0
+        with:
+          actionlint_flags: -pyflakes=
+          fail_level: error
+          reporter: github-annotations
+
+  lint:
+    name: Lint
+    needs: changes
+    if: needs.changes.outputs.heavy == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Set up pnpm
+        uses: ./.github/actions/setup-pnpm
+      - name: Check lint
+        run: pnpm lint:check
+
+  format:
+    name: Format & Manifests
+    needs: changes
+    if: needs.changes.outputs.heavy == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Set up pnpm
+        uses: ./.github/actions/setup-pnpm
+      - name: Build packages
+        run: pnpm build
+      - name: Check formatting
+        run: pnpm format:check
+      - name: Check package.json ordering
+        run: pnpm sort-package-json:check
+
+  test:
+    name: Test & Coverage
+    needs: changes
+    if: needs.changes.outputs.heavy == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up pnpm
+        uses: ./.github/actions/setup-pnpm
+      - name: Run tests with coverage
+        run: pnpm test:coverage
+      - name: Upload coverage reports
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: coverage-reports
+          path: |
+            packages/eslint-config-yarapa/coverage/lcov.info
+            packages/commitlint-config-yarapa/coverage/lcov.info
+          if-no-files-found: error
+          retention-days: 1
+
+  upload-coverage:
+    name: Upload Coverage (Trusted)
+    needs: test
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      id-token: write
+    steps:
+      - name: Download coverage reports
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: coverage-reports
+          path: packages
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5
+        with:
+          disable_search: true
+          fail_ci_if_error: true
+          files: packages/eslint-config-yarapa/coverage/lcov.info,packages/commitlint-config-yarapa/coverage/lcov.info
+          use_oidc: true
+
+  upload-coverage-fork:
+    name: Upload Coverage (Fork)
+    needs: test
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: read
+    steps:
+      - name: Download coverage reports
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: coverage-reports
+          path: packages
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5
+        with:
+          disable_search: true
+          fail_ci_if_error: false
+          files: packages/eslint-config-yarapa/coverage/lcov.info,packages/commitlint-config-yarapa/coverage/lcov.info
+          use_oidc: false
+
+  check-types:
+    name: Type Check
+    needs: changes
+    if: needs.changes.outputs.heavy == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Set up pnpm
+        uses: ./.github/actions/setup-pnpm
+      - name: Check types
+        run: pnpm typecheck
+
+  knip:
+    name: Knip
+    needs: changes
+    if: needs.changes.outputs.heavy == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Set up pnpm
+        uses: ./.github/actions/setup-pnpm
+      - name: Run Knip
+        run: pnpm knip
+
+  build:
+    name: Build
+    needs: changes
+    if: needs.changes.outputs.heavy == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Set up pnpm
+        uses: ./.github/actions/setup-pnpm
+      - name: Build package
+        run: pnpm build
+
+  package-validation:
+    name: Package Validation
+    needs: changes
+    if: needs.changes.outputs.heavy == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Set up pnpm
+        uses: ./.github/actions/setup-pnpm
+      - name: Build packages
+        run: pnpm build
+      - name: Validate package manifests and files
+        run: pnpm check:publint
+      - name: Validate package type resolution
+        run: pnpm check:attw
+
+  changeset:
+    name: Changeset
+    needs: changes
+    if: needs.changes.outputs.changeset == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up pnpm
+        uses: ./.github/actions/setup-pnpm
+      - name: Validate changesets
+        run: pnpm changeset status --since origin/main
+
+  compatibility:
+    name: Compatibility (${{ matrix.os }}, Node ${{ matrix.node }}, ESLint ${{ matrix.eslint }})
+    needs: changes
+    if: needs.changes.outputs.heavy == 'true'
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            node: 24.15.0
+            eslint: 10.4.0
+          - os: ubuntu-latest
+            node: 24.21.0
+            eslint: 10.11.0
+          - os: windows-latest
+            node: 24.21.0
+            eslint: 10.11.0
+          - os: macos-latest
+            node: 24.21.0
+            eslint: 10.11.0
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Set up pnpm
+        uses: ./.github/actions/setup-pnpm
+        with:
+          runtime: node@${{ matrix.node }}
+      - name: Install matrix ESLint
+        run: >-
+          pnpm --filter @yarapa/eslint-config-yarapa
+          add --save-dev --save-exact
+          eslint@${{ matrix.eslint }}
+          --lockfile=false
+          --ignore-scripts
+      - name: Run package tests
+        run: pnpm --filter @yarapa/eslint-config-yarapa test
+
+  test-hooks:
+    name: Git Hooks Test
+    needs: changes
+    if: needs.changes.outputs.hooks == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Set up pnpm
+        uses: ./.github/actions/setup-pnpm
+      - name: Build Commitlint config
+        run: pnpm --filter @yarapa/commitlint-config-yarapa build
+      - name: Validate hook shell syntax
+        run: sh -n .husky/pre-commit .husky/commit-msg .husky/pre-push
+      - name: Validate lint-staged configuration
+        run: pnpm exec lint-staged --config .lintstagedrc.json --diff="HEAD...HEAD"
+      - name: Validate Commitlint configuration
+        run: |
+          printf '%s\n' 'chore(ci): validate hooks' | pnpm exec commitlint
+      - name: Run pre-push hook test suite
+        run: sh scripts/validate-pre-push/validate-pre-push.test.sh
+
+  ci:
+    name: All Checks
+    if: always()
+    timeout-minutes: 5
+    needs:
+      - changes
+      - actionlint
+      - lint
+      - format
+      - test
+      - check-types
+      - build
+      - package-validation
+      - changeset
+      - compatibility
+      - knip
+      - test-hooks
+      - upload-coverage
+      - upload-coverage-fork
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require all verification jobs
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: exit 1

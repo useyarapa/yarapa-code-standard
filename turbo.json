@@ -1,0 +1,67 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "ui": "tui",
+  "globalDependencies": [".prettierrc*", ".prettierignore", "tsconfig*.json"],
+  "tasks": {
+    "audit": {
+      "cache": false
+    },
+    "build": {
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["dist/**"]
+    },
+    "clean": {
+      "cache": false
+    },
+    "clean:dist": {
+      "cache": false
+    },
+    "clean:test": {
+      "cache": false
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["@yarapa/eslint-config-yarapa#build", "build"]
+    },
+    "lint:check": {
+      "dependsOn": ["@yarapa/eslint-config-yarapa#build", "build"]
+    },
+    "test": {},
+    "test:coverage": {
+      "outputs": ["coverage/**"]
+    },
+    "test:watch": {
+      "cache": false,
+      "persistent": true
+    },
+    "typecheck": {},
+    "verify": {
+      "dependsOn": [
+        "build",
+        "lint:check",
+        "typecheck",
+        "test",
+        "//#format:check",
+        "//#knip",
+        "//#sort-package-json:check",
+        "//#test:hooks"
+      ]
+    },
+    "//#format:check": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "**/*.{ts,tsx,js,jsx,mjs,cjs,json,md,yml,yaml}"]
+    },
+    "//#knip": {
+      "inputs": ["$TURBO_DEFAULT$", "knip.json"]
+    },
+    "//#sort-package-json:check": {
+      "inputs": ["package.json", "packages/*/package.json"]
+    },
+    "//#test:hooks": {
+      "inputs": [".husky/pre-push", "scripts/validate-pre-push/**"]
+    }
+  }
+}

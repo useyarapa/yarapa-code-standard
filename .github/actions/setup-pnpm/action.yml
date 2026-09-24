@@ -1,0 +1,32 @@
+name: Set up pnpm
+description: Configure pnpm with the repository cache and lockfile settings
+
+inputs:
+  runtime:
+    description: Optional runtime override for compatibility matrix jobs
+    required: false
+    default: ""
+  install:
+    description: Whether pnpm/setup installs workspace dependencies
+    required: false
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    - name: Set up pnpm
+      if: inputs.runtime == ''
+      uses: pnpm/setup@703c52620218391530e48b9e8870d5c0082e1b9b # v2.1.0
+      with:
+        cache: true
+        require-lockfile: true
+        install: ${{ inputs.install }}
+
+    - name: Set up pnpm with runtime override
+      if: inputs.runtime != ''
+      uses: pnpm/setup@703c52620218391530e48b9e8870d5c0082e1b9b # v2.1.0
+      with:
+        runtime: ${{ inputs.runtime }}
+        cache: true
+        require-lockfile: true
+        install: ${{ inputs.install }}

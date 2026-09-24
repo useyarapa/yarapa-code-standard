@@ -1,0 +1,66 @@
+{
+  "name": "@yarapa/prettier-config-yarapa",
+  "version": "0.0.0",
+  "description": "Deterministic Prettier configuration for Yarapa projects.",
+  "keywords": [
+    "formatting",
+    "prettier",
+    "prettier-config"
+  ],
+  "homepage": "https://github.com/useyarapa/yarapa-code-standard/tree/main/packages/prettier-config-yarapa",
+  "bugs": {
+    "url": "https://github.com/useyarapa/yarapa-code-standard/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/useyarapa/yarapa-code-standard.git",
+    "directory": "packages/prettier-config-yarapa"
+  },
+  "license": "MIT",
+  "author": "Yarapa",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "audit": "pnpm audit",
+    "build": "tsdown",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "clean:dist": "rm -rf dist",
+    "dev": "tsdown --watch",
+    "format": "prettier --write --cache .",
+    "format:check": "prettier --check --cache .",
+    "lint": "eslint . --fix --cache --max-warnings=0",
+    "lint:check": "eslint . --cache --max-warnings=0",
+    "sort-package-json": "sort-package-json package.json",
+    "sort-package-json:check": "sort-package-json --check package.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.2",
+    "eslint": "10.11.0",
+    "prettier": "3.9.9",
+    "tsdown": "0.23.0",
+    "typescript": "6.0.3"
+  },
+  "peerDependencies": {
+    "prettier": ">=3.0.0 <4.0.0"
+  },
+  "engines": {
+    "node": ">=24.15.0 <25"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

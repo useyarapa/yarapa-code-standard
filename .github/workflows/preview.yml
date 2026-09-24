@@ -1,0 +1,41 @@
+name: Preview
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - labeled
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  publish:
+    name: Publish Preview
+    if: >-
+      github.repository == 'useyarapa/yarapa-code-standard' &&
+      contains(github.event.pull_request.labels.*.name, 'preview')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Set up pnpm
+        uses: ./.github/actions/setup-pnpm
+      - name: Build package
+        run: pnpm build
+      - name: Publish preview release
+        run: >-
+          pnpm exec pkg-pr-new publish
+          --pnpm
+          --previewVersion
+          --packageManager=pnpm,npm,yarn
+          ./packages/eslint-config-yarapa
+          ./packages/prettier-config-yarapa
+          ./packages/commitlint-config-yarapa

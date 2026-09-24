@@ -1,0 +1,63 @@
+language: "en-US"
+early_access: false
+
+reviews:
+  profile: "assertive"
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  collapse_walkthrough: true
+  auto_review:
+    enabled: true
+    drafts: false
+  path_filters:
+    - "packages/commitlint-config-yarapa/src/**"
+    - "packages/commitlint-config-yarapa/test/**"
+    - "packages/commitlint-config-yarapa/package.json"
+    - "packages/commitlint-config-yarapa/tsconfig.json"
+    - "packages/commitlint-config-yarapa/tsdown.config.ts"
+    - "packages/eslint-config-yarapa/src/**"
+    - "packages/eslint-config-yarapa/test/**"
+    - "packages/eslint-config-yarapa/fixtures/**"
+    - "packages/eslint-config-yarapa/package.json"
+    - "packages/eslint-config-yarapa/tsconfig.json"
+    - "packages/eslint-config-yarapa/tsdown.config.ts"
+    - "packages/eslint-config-yarapa/vitest.config.ts"
+    - "packages/prettier-config-yarapa/src/**"
+    - "packages/prettier-config-yarapa/package.json"
+    - "packages/prettier-config-yarapa/tsconfig.json"
+    - "packages/prettier-config-yarapa/tsdown.config.ts"
+    - "package.json"
+    - "pnpm-workspace.yaml"
+    - "pnpm-lock.yaml"
+    - "tsconfig.json"
+    - "turbo.json"
+    - "eslint.config.ts"
+    - ".nvmrc"
+    - ".changeset/config.json"
+    - ".github/workflows/**"
+    - ".github/actions/**"
+    - ".husky/**"
+    - "scripts/**"
+    - "!**/*.md"
+    - "!**/LICENSE"
+    - "!.agents/**"
+    - "!.claude/**"
+    - "!skills-lock.json"
+    - "!.coderabbit.yaml"
+  path_instructions:
+    - path: "**/*.{ts,tsx,js,mjs,cjs}"
+      instructions: |
+        Suppression Governance: Flag any `@ts-ignore`, undescribed `@ts-expect-error`, `as any`, type casts masking errors, skipped tests (`.skip()`, `.todo()`), and undocumented or overly broad `eslint-disable*` directives. Require root-cause fixes or a narrow, justified suppression.
+    - path: "**/test/**"
+      instructions: |
+        Behavioral Verification: Reject tests asserting static config object values (e.g. `expect(rules['x']).toBe('error')`). Tests must prove observable lint diagnostics against source fixtures.
+    - path: "packages/eslint-config-yarapa/**"
+      instructions: |
+        Architecture Boundaries: Source lives in `src/`. Flag any commit modifying generated `dist/` directly. Ensure `src/index.ts` remains the sole canonical export contract without leaking internal helpers or types.
+    - path: "packages/prettier-config-yarapa/**"
+      instructions: |
+        Architecture Boundaries: Source lives in `src/`. Flag any commit modifying generated `dist/` directly. Ensure `src/index.ts` remains the sole canonical export contract without leaking internal helpers or types.
+    - path: "packages/eslint-config-yarapa/src/configs/**"
+      instructions: |
+        Breaking Changes: Raising existing rule severity (`off`/`warn` -> `error`) or adding strict rules is breaking. Flag if PR lacks appropriate SemVer classification or migration rationale.

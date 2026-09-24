@@ -1,0 +1,65 @@
+{
+  "name": "yarapa-code-standard",
+  "private": true,
+  "description": "Monorepo for Yarapa's shared engineering standards and config packages.",
+  "type": "module",
+  "scripts": {
+    "audit": "turbo run audit",
+    "build": "turbo run build",
+    "changeset": "changeset",
+    "changeset:status": "changeset status --since main",
+    "check:attw": "pnpm --filter './packages/*' exec attw --pack . --profile esm-only",
+    "check:publint": "pnpm --filter './packages/*' exec publint",
+    "clean": "turbo run clean && rm -rf .turbo node_modules/.cache",
+    "clean:dist": "turbo run clean:dist",
+    "clean:test": "turbo run clean:test",
+    "dev": "turbo run dev",
+    "format": "prettier --write --cache .",
+    "format:check": "prettier --check --cache .",
+    "inspect": "pnpm build && eslint-config-inspector",
+    "knip": "knip",
+    "lint": "turbo run lint",
+    "lint:check": "turbo run lint:check",
+    "prepare": "husky",
+    "sort-package-json": "sort-package-json package.json packages/*/package.json",
+    "sort-package-json:check": "sort-package-json --check package.json packages/*/package.json",
+    "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage",
+    "test:hooks": "sh scripts/validate-pre-push/validate-pre-push.test.sh",
+    "test:watch": "turbo run test:watch",
+    "typecheck": "turbo run typecheck",
+    "verify": "turbo run verify",
+    "version-packages": "changeset version"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "0.18.5",
+    "@changesets/cli": "3.0.3",
+    "@commitlint/cli": "21.2.3",
+    "@eslint/config-inspector": "3.5.0",
+    "@yarapa/commitlint-config-yarapa": "workspace:*",
+    "@yarapa/eslint-config-yarapa": "workspace:*",
+    "@yarapa/prettier-config-yarapa": "workspace:*",
+    "eslint": "10.11.0",
+    "eslint-config-prettier": "10.1.8",
+    "husky": "9.1.7",
+    "knip": "6.37.0",
+    "lint-staged": "17.5.1",
+    "pkg-pr-new": "0.0.88",
+    "prettier": "3.9.9",
+    "publint": "0.3.24",
+    "sort-package-json": "4.0.0",
+    "turbo": "2.11.3",
+    "typescript": "7.0.2"
+  },
+  "packageManager": "pnpm@11.23.0",
+  "engines": {
+    "node": ">=24.15.0 <25"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.20.0",
+      "onFail": "download"
+    }
+  }
+}

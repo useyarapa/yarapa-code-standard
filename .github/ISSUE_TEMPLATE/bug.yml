@@ -1,0 +1,74 @@
+name: Bug report
+description: Report incorrect diagnostics, crashes, compatibility failures, or package-consumption defects.
+title: "bug: "
+labels: ["bug", "needs triage"]
+assignees:
+  - joetakara
+  - next-friday-engineer
+  - yarapa-engineer
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please ensure you are testing against a supported Node.js, ESLint, and TypeScript combination.
+        Do not include credentials, secrets, personal/customer data, or proprietary source code.
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Pre-flight checks
+      description: Verify these items before submitting.
+      options:
+        - label: I searched existing issues and verified this has not been reported yet.
+          required: true
+        - label: I tested against the latest version of `@yarapa/eslint-config-yarapa`.
+          required: true
+  - type: input
+    id: version
+    attributes:
+      label: "@yarapa/eslint-config-yarapa version"
+      placeholder: 0.0.0
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include Node.js, ESLint, TypeScript, OS, and package manager.
+      placeholder: |
+        Node.js: 24.20.0
+        ESLint: 10.10.0
+        TypeScript: 6.0.3
+        OS: Ubuntu 24.04 / macOS 15.0
+        Package Manager: pnpm 11.23.0
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Provide a minimal public reproduction repo, StackBlitz link, or sanitized code/config demonstrating the defect.
+      placeholder: |
+        // Minimal code snippet, reproduction repository, or configuration
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What diagnostics or behavior did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What diagnostics, crash, or unexpected behavior occurred?
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety & integrity
+      options:
+        - label: I confirmed that credentials, secrets, personal/customer data, and proprietary code have been removed from this report.
+          required: true

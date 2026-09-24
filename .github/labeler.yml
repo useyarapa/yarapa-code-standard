@@ -1,0 +1,53 @@
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.md"
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/workflows/**"
+          - ".github/actions/**"
+          - ".github/file-filters.yml"
+          - ".github/dependabot.yml"
+
+release:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".changeset/**"
+          - ".github/workflows/release.yml"
+
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "package.json"
+          - "packages/*/package.json"
+          - "pnpm-lock.yaml"
+          - "pnpm-workspace.yaml"
+
+tests:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "packages/eslint-config-yarapa/test/**"
+          - "packages/eslint-config-yarapa/fixtures/**"
+
+eslint-config:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "packages/eslint-config-yarapa/src/**"
+          - "packages/eslint-config-yarapa/tsdown.config.ts"
+          - "packages/eslint-config-yarapa/tsconfig.json"
+
+prettier-config:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "packages/prettier-config-yarapa/src/**"
+          - "packages/prettier-config-yarapa/tsdown.config.ts"
+          - "packages/prettier-config-yarapa/tsconfig.json"
+
+commitlint-config:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "packages/commitlint-config-yarapa/src/**"
+          - "packages/commitlint-config-yarapa/tsdown.config.ts"
+          - "packages/commitlint-config-yarapa/tsconfig.json"
