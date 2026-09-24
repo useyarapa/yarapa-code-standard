@@ -250,7 +250,7 @@ jobs:
       - name: Set up pnpm
         uses: ./.github/actions/setup-pnpm
       - name: Validate changesets
-        run: pnpm changeset status
+        run: pnpm changeset status --since origin/main
 
   compatibility:
     name: Compatibility (${{ matrix.os }}, Node ${{ matrix.node }}, ESLint ${{ matrix.eslint }})
@@ -306,6 +306,8 @@ jobs:
           persist-credentials: false
       - name: Set up pnpm
         uses: ./.github/actions/setup-pnpm
+      - name: Build Commitlint config
+        run: pnpm --filter @yarapa/commitlint-config-yarapa build
       - name: Validate hook shell syntax
         run: sh -n .husky/pre-commit .husky/commit-msg .husky/pre-push
       - name: Validate lint-staged configuration
