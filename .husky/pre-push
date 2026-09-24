@@ -1,0 +1,80 @@
+#!/usr/bin/env sh
+set -eu
+
+ignore_regex='(^|/)[^/]*\.md$|^docs/|^LICENSE$|^\.changeset/|^\.github/ISSUE_TEMPLATE/|^\.github/pull_request_template\.md$|^\.github/CODEOWNERS$|^\.github/dependabot\.yml$|^\.github/labeler\.yml$|^\.vscode/|^\.claude/|^\.agents/|^CLAUDE\.md$|^AGENTS\.md$|(^|/)[^/]*\.(png|svg|jpg)$'
+
+is_zero_oid() {
+	case "$1" in
+		''|*[!0]*) return 1 ;;
+		*) return 0 ;;
+	esac
+}
+
+run_verification() {
+	pnpm verify
+}
+
+# Git supplies one ref tuple per line. Evaluate each pushed ref independently;
+# a code change in any ref runs verification for the whole push.
+while IFS=' ' read -r local_ref local_oid remote_ref remote_oid || [ -n "${local_ref:-}" ]; do
+	: "$local_ref" "$remote_ref"
+
+	# Deleting a remote branch cannot introduce code.
+	if is_zero_oid "${local_oid:-}"; then
+		continue
+	fi
+
+	if is_zero_oid "${remote_oid:-}"; then
+		# For new branches, inspect all commits since main when available.
+		if git rev-parse --verify --quiet 'origin/main^{commit}' >/dev/null 2>&1; then
+			commit_range="origin/main..$local_oid"
+		else
+			commit_range="$local_oid~1..$local_oid"
+		fi
+	else
+		commit_range="$remote_oid..$local_oid"
+	fi
+
+	if ! commits=$(git rev-list --reverse "$commit_range" 2>/dev/null); then
+		run_verification
+		exit
+	fi
+
+	[ -n "$commits" ] || continue
+
+	changed_files=
+	if [ "$(printf '%s\n' "$commits" | wc -l | tr -d ' ')" -eq 1 ]; then
+		# diff-tree reads the commit itself, so a clean worktree cannot hide it.
+		if ! changed_files=$(git diff-tree --no-commit-id --name-only -r --root -m --no-renames "$local_oid" 2>/dev/null); then
+			run_verification
+			exit
+		fi
+	else
+		for commit in $commits; do
+			if ! commit_files=$(git diff-tree --no-commit-id --name-only -r --root -m --no-renames "$commit" 2>/dev/null); then
+				run_verification
+				exit
+			fi
+			if [ -n "$commit_files" ]; then
+				if [ -n "$changed_files" ]; then
+					changed_files=$(printf '%s\n%s' "$changed_files" "$commit_files")
+				else
+					changed_files=$commit_files
+				fi
+			fi
+		done
+	fi
+
+	if [ -n "$changed_files" ]; then
+		if printf '%s\n' "$changed_files" | grep -Ev "$ignore_regex" >/dev/null; then
+			run_verification
+			exit
+		else
+			grep_status=$?
+			if [ "$grep_status" -ne 1 ]; then
+				run_verification
+				exit
+			fi
+		fi
+	fi
+done

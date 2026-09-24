@@ -1,0 +1,33 @@
+# Required CI stays present for every pull request.
+# This mirrors the pre-push policy: only known non-code paths skip full verification.
+heavy:
+  - "**"
+  - "!**/*.md"
+  - "!docs/**"
+  - "!LICENSE"
+  - "!.changeset/**"
+  - "!.github/ISSUE_TEMPLATE/**"
+  - "!.github/pull_request_template.md"
+  - "!.github/CODEOWNERS"
+  - "!.github/dependabot.yml"
+  - "!.github/labeler.yml"
+  - "!.vscode/**"
+  - "!.claude/**"
+  - "!.agents/**"
+  - "!CLAUDE.md"
+  - "!AGENTS.md"
+  - "!**/*.png"
+  - "!**/*.svg"
+  - "!**/*.jpg"
+
+workflow:
+  - ".github/workflows/**"
+
+changeset:
+  - ".changeset/**"
+
+hooks:
+  - ".husky/**"
+  - "scripts/validate-pre-push/**"
+  - ".lintstagedrc.json"
+  - ".commitlintrc.json"

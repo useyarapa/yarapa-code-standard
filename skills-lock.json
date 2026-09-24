@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "create-github-issue": {
+      "source": "useyarapa/yarapa-skills",
+      "sourceType": "github",
+      "skillPath": "skills/create-github-issue/SKILL.md",
+      "computedHash": "eb932b37fdb06a5e16b2e86fa3d6ac35501dfe0dcb33ab986231960f9218eba6"
+    },
+    "create-github-pr": {
+      "source": "useyarapa/yarapa-skills",
+      "sourceType": "github",
+      "skillPath": "skills/create-github-pr/SKILL.md",
+      "computedHash": "a30a48776e71620e0b6ce3caef393a1f584949d60250ce04ee2804ba0f78e262"
+    }
+  }
+}

@@ -1,0 +1,197 @@
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    exclude-paths:
+      - "packages/**"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Bangkok
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: chore
+      prefix-development: chore
+      include: scope
+    groups:
+      eslint-tooling:
+        applies-to: version-updates
+        patterns:
+          - eslint
+          - "@eslint/*"
+          - eslint-config-prettier
+        update-types:
+          - minor
+          - patch
+      repo-tooling:
+        applies-to: version-updates
+        patterns:
+          - "@changesets/*"
+          - "@commitlint/*"
+          - husky
+          - knip
+          - lint-staged
+          - prettier
+          - sort-package-json
+          - turbo
+          - typescript
+        update-types:
+          - minor
+          - patch
+      root-minor-patch:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: npm
+    directory: /packages/eslint-config-yarapa
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Bangkok
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: chore
+      prefix-development: chore
+      include: scope
+    ignore:
+      - dependency-name: typescript
+        versions: [">=6.1.0"]
+    groups:
+      eslint-ecosystem:
+        applies-to: version-updates
+        patterns:
+          - eslint
+          - "@eslint/*"
+          - "@eslint-community/*"
+          - "@stylistic/*"
+          - "eslint-plugin-*"
+          - eslint-import-resolver-typescript
+          - typescript-eslint
+          - "@vitest/eslint-plugin"
+        update-types:
+          - minor
+          - patch
+      typescript-ecosystem:
+        applies-to: version-updates
+        patterns:
+          - typescript
+          - "@types/*"
+        update-types:
+          - minor
+          - patch
+      test-build-tooling:
+        applies-to: version-updates
+        patterns:
+          - vitest
+          - "@vitest/coverage-v8"
+          - tsdown
+        update-types:
+          - minor
+          - patch
+      package-minor-patch:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: npm
+    directory: /packages/prettier-config-yarapa
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Bangkok
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: chore
+      prefix-development: chore
+      include: scope
+    groups:
+      lint-tooling:
+        applies-to: version-updates
+        patterns:
+          - eslint
+          - prettier
+        update-types:
+          - minor
+          - patch
+      typescript-ecosystem:
+        applies-to: version-updates
+        patterns:
+          - typescript
+          - "@types/*"
+          - tsdown
+        update-types:
+          - minor
+          - patch
+      package-minor-patch:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: npm
+    directory: /packages/commitlint-config-yarapa
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Bangkok
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: chore
+      prefix-development: chore
+      include: scope
+    groups:
+      commitlint-ecosystem:
+        applies-to: version-updates
+        patterns:
+          - "@commitlint/*"
+        update-types:
+          - minor
+          - patch
+      test-build-tooling:
+        applies-to: version-updates
+        patterns:
+          - "@types/*"
+          - "@vitest/*"
+          - tsdown
+          - typescript
+          - vitest
+        update-types:
+          - minor
+          - patch
+      package-minor-patch:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:30"
+      timezone: Asia/Bangkok
+    commit-message:
+      prefix: chore
+      prefix-development: chore
+      include: scope
+    groups:
+      github-actions:
+        patterns:
+          - "*"

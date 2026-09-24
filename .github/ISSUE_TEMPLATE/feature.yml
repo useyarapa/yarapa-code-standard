@@ -1,0 +1,60 @@
+name: Feature request
+description: Propose a concrete change to @yarapa/eslint-config-yarapa.
+title: "feat: "
+labels: ["enhancement", "needs triage"]
+assignees:
+  - joetakara
+  - next-friday-engineer
+  - yarapa-engineer
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for actionable rule or preset feature requests.
+        For usage questions or exploratory ideas, please use [GitHub Discussions](https://github.com/useyarapa/yarapa-code-standard/discussions) instead.
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Affected area
+      description: Which capability or profile does this proposal target?
+      options:
+        - Core / Engine Policy
+        - TypeScript (typescript-eslint)
+        - Node.js (eslint-plugin-n)
+        - Browser / Globals
+        - Tests (@vitest/eslint-plugin)
+        - Formatting / Style (@stylistic)
+        - Imports & Ordering (import-x / perfectionist)
+        - Code Quality & Security (sonarjs / unicorn)
+        - Data & Manifests (jsonc / package-json)
+        - Documentation / Repository Governance
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What concrete limitation, false positive, or use case should be addressed?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Describe the smallest change that would address the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Optional alternatives, workarounds, or upstream conventions you considered.
+    validations:
+      required: false
+  - type: checkboxes
+    id: breaking
+    attributes:
+      label: Breaking change assessment
+      description: Per our [versioning policy](https://github.com/useyarapa/yarapa-code-standard/blob/main/packages/eslint-config-yarapa/README.md#versioning-policy), adding a new rule or increasing severity is a breaking change.
+      options:
+        - label: This proposal introduces a new rule or increases severity (requires a major semver bump).

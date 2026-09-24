@@ -1,0 +1,103 @@
+{
+  "name": "@yarapa/eslint-config-yarapa",
+  "version": "0.0.0",
+  "description": "Strict, type-aware ESLint Flat Config for JavaScript, TypeScript, and Node.js.",
+  "keywords": [
+    "eslint-config",
+    "flat-config",
+    "strict",
+    "typescript-eslint",
+    "stylistic",
+    "type-aware"
+  ],
+  "homepage": "https://github.com/useyarapa/yarapa-code-standard/tree/main/packages/eslint-config-yarapa",
+  "bugs": {
+    "url": "https://github.com/useyarapa/yarapa-code-standard/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/useyarapa/yarapa-code-standard.git",
+    "directory": "packages/eslint-config-yarapa"
+  },
+  "license": "MIT",
+  "author": "YARAPA",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "audit": "pnpm audit",
+    "build": "tsdown",
+    "clean": "rm -rf dist coverage *.tsbuildinfo",
+    "clean:dist": "rm -rf dist",
+    "clean:test": "rm -rf coverage",
+    "dev": "tsdown --watch",
+    "format": "prettier --write --cache .",
+    "format:check": "prettier --check --cache .",
+    "inspect": "pnpm build && eslint-config-inspector",
+    "lint": "eslint . --fix --cache --max-warnings=0",
+    "lint:check": "eslint . --cache --max-warnings=0",
+    "sort-package-json": "sort-package-json package.json",
+    "sort-package-json:check": "sort-package-json --check package.json",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@eslint-community/eslint-plugin-eslint-comments": "4.8.1",
+    "@eslint/markdown": "8.0.3",
+    "@stylistic/eslint-plugin": "5.10.0",
+    "@vitest/eslint-plugin": "1.6.27",
+    "eslint-import-resolver-typescript": "4.4.5",
+    "eslint-plugin-format": "2.0.1",
+    "eslint-plugin-import-x": "4.17.1",
+    "eslint-plugin-jsdoc": "64.5.4",
+    "eslint-plugin-jsonc": "3.4.2",
+    "eslint-plugin-n": "18.3.0",
+    "eslint-plugin-package-json": "1.10.0",
+    "eslint-plugin-perfectionist": "5.12.0",
+    "eslint-plugin-promise": "7.3.0",
+    "eslint-plugin-regexp": "3.3.1",
+    "eslint-plugin-sonarjs": "4.2.1",
+    "eslint-plugin-toml": "1.5.0",
+    "eslint-plugin-unicorn": "76.0.0",
+    "eslint-plugin-unused-imports": "4.4.1",
+    "eslint-plugin-yml": "3.8.1",
+    "globals": "17.12.0",
+    "jsonc-eslint-parser": "3.3.0",
+    "toml-eslint-parser": "1.0.3",
+    "typescript-eslint": "8.70.1",
+    "yaml-eslint-parser": "2.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.2",
+    "@vitest/coverage-v8": "5.0.1",
+    "eslint": "10.11.0",
+    "tsdown": "0.23.0",
+    "typescript": "6.0.3",
+    "vite": "8.3.0",
+    "vitest": "5.0.1"
+  },
+  "peerDependencies": {
+    "eslint": "^10.4.0",
+    "typescript": ">=5.0.0 <6.1.0"
+  },
+  "engines": {
+    "node": ">=24.15.0 <25"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

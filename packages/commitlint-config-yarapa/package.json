@@ -1,0 +1,80 @@
+{
+  "name": "@yarapa/commitlint-config-yarapa",
+  "version": "0.0.0",
+  "description": "Deterministic Commitlint configuration for YARAPA projects.",
+  "keywords": [
+    "commitlint",
+    "commitlint-config",
+    "conventional-commits",
+    "git"
+  ],
+  "homepage": "https://github.com/useyarapa/yarapa-code-standard/tree/main/packages/commitlint-config-yarapa",
+  "bugs": {
+    "url": "https://github.com/useyarapa/yarapa-code-standard/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/useyarapa/yarapa-code-standard.git",
+    "directory": "packages/commitlint-config-yarapa"
+  },
+  "license": "MIT",
+  "author": "YARAPA",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "audit": "pnpm audit",
+    "build": "tsdown",
+    "clean": "rm -rf dist coverage *.tsbuildinfo",
+    "clean:dist": "rm -rf dist",
+    "clean:test": "rm -rf coverage",
+    "dev": "tsdown --watch",
+    "format": "prettier --write --cache .",
+    "format:check": "prettier --check --cache .",
+    "lint": "eslint . --fix --cache --max-warnings=0",
+    "lint:check": "eslint . --cache --max-warnings=0",
+    "sort-package-json": "sort-package-json package.json",
+    "sort-package-json:check": "sort-package-json --check package.json",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@commitlint/config-conventional": "21.2.3"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "21.2.3",
+    "@commitlint/lint": "21.2.3",
+    "@commitlint/types": "21.2.3",
+    "@types/node": "26.6.2",
+    "@vitest/coverage-v8": "5.0.1",
+    "eslint": "10.11.0",
+    "prettier": "3.9.9",
+    "tsdown": "0.23.0",
+    "typescript": "6.0.3",
+    "vite": "8.3.0",
+    "vitest": "5.0.1"
+  },
+  "peerDependencies": {
+    "@commitlint/cli": ">=19.0.0"
+  },
+  "engines": {
+    "node": ">=24.15.0 <25"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
