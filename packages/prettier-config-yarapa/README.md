@@ -5,7 +5,7 @@
 [![node version](https://img.shields.io/badge/node-%3E%3D24.15.0%20%3C25-brightgreen.svg)](https://nodejs.org)
 [![license](https://img.shields.io/github/license/useyarapa/yarapa-code-standard.svg)](https://github.com/useyarapa/yarapa-code-standard/blob/main/LICENSE)
 
-Deterministic Prettier configuration for YARAPA projects.
+Deterministic Prettier configuration for Yarapa projects.
 
 The package is ESM-only. It exports a static configuration object matching the layout rules of `@yarapa/eslint-config-yarapa`.
 
@@ -165,4 +165,4 @@ The package follows [Semantic Versioning 2.0.0](https://semver.org/).
 
 ## License
 
-[MIT](https://github.com/useyarapa/yarapa-code-standard/blob/main/LICENSE) © YARAPA
+[MIT](https://github.com/useyarapa/yarapa-code-standard/blob/main/LICENSE) © Yarapa

@@ -1,7 +1,7 @@
 {
   "name": "@yarapa/prettier-config-yarapa",
   "version": "0.0.0",
-  "description": "Deterministic Prettier configuration for YARAPA projects.",
+  "description": "Deterministic Prettier configuration for Yarapa projects.",
   "keywords": [
     "formatting",
     "prettier",
@@ -17,7 +17,7 @@
     "directory": "packages/prettier-config-yarapa"
   },
   "license": "MIT",
-  "author": "YARAPA",
+  "author": "Yarapa",
   "sideEffects": false,
   "type": "module",
   "exports": {

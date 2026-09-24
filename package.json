@@ -1,7 +1,7 @@
 {
   "name": "yarapa-code-standard",
   "private": true,
-  "description": "Monorepo for YARAPA's shared engineering standards and config packages.",
+  "description": "Monorepo for Yarapa's shared engineering standards and config packages.",
   "type": "module",
   "scripts": {
     "audit": "turbo run audit",

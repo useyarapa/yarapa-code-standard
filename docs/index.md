@@ -1,4 +1,4 @@
-# YARAPA Code Standard Documentation
+# Yarapa Code Standard Documentation
 
 Navigation index for the `docs/` branch of the documentation surface.
 

@@ -20,7 +20,7 @@
     "directory": "packages/eslint-config-yarapa"
   },
   "license": "MIT",
-  "author": "YARAPA",
+  "author": "Yarapa",
   "sideEffects": false,
   "type": "module",
   "exports": {

@@ -1,4 +1,4 @@
-# YARAPA Code Standard
+# Yarapa Code Standard
 
 [![Verify workflow status](https://github.com/useyarapa/yarapa-code-standard/actions/workflows/ci.yml/badge.svg)](https://github.com/useyarapa/yarapa-code-standard/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/useyarapa/yarapa-code-standard/graph/badge.svg)](https://codecov.io/gh/useyarapa/yarapa-code-standard)
@@ -8,7 +8,7 @@
 [![node version](https://img.shields.io/badge/node-%3E%3D24.15.0%20%3C25-brightgreen.svg)](https://nodejs.org)
 [![license](https://img.shields.io/github/license/useyarapa/yarapa-code-standard.svg)](LICENSE)
 
-Three shared configuration packages standardize code linting, formatting, and commit messages across YARAPA projects. Policy is authored here once and inherited everywhere else, so a change is one reviewable diff instead of a negotiation per repository.
+Three shared configuration packages standardize code linting, formatting, and commit messages across Yarapa projects. Policy is authored here once and inherited everywhere else, so a change is one reviewable diff instead of a negotiation per repository.
 
 This repository is also a pnpm workspace that lints itself with the packages it publishes, which means it cannot ship a policy it violates.
 
@@ -136,4 +136,4 @@ The [documentation index](docs/index.md) routes each question to the document th
 
 ## License
 
-[MIT](LICENSE) © YARAPA
+[MIT](LICENSE) © Yarapa

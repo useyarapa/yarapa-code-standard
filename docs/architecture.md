@@ -1,4 +1,4 @@
-# YARAPA Code Standard: Architecture
+# Yarapa Code Standard: Architecture
 
 System structure, composition order, module boundaries, and the distribution pipeline of `@yarapa/eslint-config-yarapa`.
 

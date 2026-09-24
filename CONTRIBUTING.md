@@ -1,6 +1,6 @@
-# Contributing to YARAPA Code Standard
+# Contributing to Yarapa Code Standard
 
-Thank you for contributing to YARAPA Code Standard.
+Thank you for contributing to Yarapa Code Standard.
 
 This pnpm workspace publishes `@yarapa/eslint-config-yarapa` under `packages/eslint-config-yarapa/`, `@yarapa/prettier-config-yarapa` under `packages/prettier-config-yarapa/`, and `@yarapa/commitlint-config-yarapa` under `packages/commitlint-config-yarapa/`.
 

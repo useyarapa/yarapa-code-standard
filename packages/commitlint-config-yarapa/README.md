@@ -6,7 +6,7 @@
 [![node version](https://img.shields.io/badge/node-%3E%3D24.15.0%20%3C25-brightgreen.svg)](https://nodejs.org)
 [![license](https://img.shields.io/github/license/useyarapa/yarapa-code-standard.svg)](https://github.com/useyarapa/yarapa-code-standard/blob/main/LICENSE)
 
-Deterministic Commitlint configuration for YARAPA projects.
+Deterministic Commitlint configuration for Yarapa projects.
 
 The package is ESM-only. It exports a static configuration enforcing Conventional Commits with mandatory lower-case scopes, 50-character subject ceilings, and body/footer bans.
 
@@ -77,7 +77,7 @@ Add commit validation scripts to `package.json`:
 
 ## Enforced Rules
 
-The exported configuration defines these rules matching YARAPA engineering standards:
+The exported configuration defines these rules matching Yarapa engineering standards:
 
 | Rule                       | Severity | Value                                                                                            | Description                                              |
 | :------------------------- | :------- | :----------------------------------------------------------------------------------------------- | :------------------------------------------------------- |
@@ -106,4 +106,4 @@ The package follows [Semantic Versioning 2.0.0](https://semver.org/).
 
 ## License
 
-[MIT](https://github.com/useyarapa/yarapa-code-standard/blob/main/LICENSE) © YARAPA
+[MIT](https://github.com/useyarapa/yarapa-code-standard/blob/main/LICENSE) © Yarapa

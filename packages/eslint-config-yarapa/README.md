@@ -307,4 +307,4 @@ Release notes state affected rule names, severity changes, and file patterns exp
 
 ## License
 
-[MIT](https://github.com/useyarapa/yarapa-code-standard/blob/main/LICENSE) © YARAPA
+[MIT](https://github.com/useyarapa/yarapa-code-standard/blob/main/LICENSE) © Yarapa

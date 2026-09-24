@@ -1,7 +1,7 @@
 {
   "name": "@yarapa/commitlint-config-yarapa",
   "version": "0.0.0",
-  "description": "Deterministic Commitlint configuration for YARAPA projects.",
+  "description": "Deterministic Commitlint configuration for Yarapa projects.",
   "keywords": [
     "commitlint",
     "commitlint-config",
@@ -18,7 +18,7 @@
     "directory": "packages/commitlint-config-yarapa"
   },
   "license": "MIT",
-  "author": "YARAPA",
+  "author": "Yarapa",
   "sideEffects": false,
   "type": "module",
   "exports": {

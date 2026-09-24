@@ -1,6 +1,6 @@
-# YARAPA Code Standard: Overview
+# Yarapa Code Standard: Overview
 
-Purpose, audience, and design stance of the YARAPA Code Standard repository.
+Purpose, audience, and design stance of the Yarapa Code Standard repository.
 
 ---
 
